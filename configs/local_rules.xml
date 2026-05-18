@@ -1,0 +1,46 @@
+<!-- Local rules -->
+<group name="local,syslog,sshd,">
+  <rule id="100001" level="5">
+    <if_sid>5716</if_sid>
+    <srcip>1.1.1.1</srcip>
+    <description>sshd: authentication failed from IP 1.1.1.1.</description>
+    <group>authentication_failed,pci_dss_10.2.4,pci_dss_10.2.5,</group>
+  </rule>
+</group>
+
+<!-- HTTP Flood / DDoS Detection Rules - MIKS Group Task -->
+<group name="web,nginx,ddos,">
+
+  <!-- Override rule 31108 (Ignored URLs) to make it visible -->
+  <rule id="100005" level="3">
+    <if_sid>31108</if_sid>
+    <description>Web server: Request to monitored URL</description>
+  </rule>
+
+  <!-- Rule: 50+ request dari IP yang sama dalam 10 detik = Possible Flood -->
+  <rule id="100010" level="6" frequency="50" timeframe="10">
+    <if_matched_sid>100005</if_matched_sid>
+    <same_source_ip />
+    <description>Web server: Possible HTTP Flood from same source IP (50+ requests in 10s)</description>
+    <group>web_flood,ddos,pci_dss_6.6,</group>
+  </rule>
+
+  <!-- Rule: 200+ request dari IP yang sama dalam 30 detik = DDoS Kritis -->
+  <rule id="100011" level="10" frequency="200" timeframe="30">
+    <if_matched_sid>100005</if_matched_sid>
+    <same_source_ip />
+    <description>Web server: HIGH VOLUME HTTP Flood DETECTED - Possible DDoS Attack!</description>
+    <group>web_flood,ddos,attack,pci_dss_6.6,</group>
+  </rule>
+
+</group>
+
+<!-- Fileless Malware / Memory Forensics Rules - MIKS Group Task -->
+<group name="auditd,fileless,malware,">
+  <rule id="100020" level="12">
+    <decoded_as>auditd</decoded_as>
+    <match>bash -i|import socket|pty.spawn|/dev/tcp/|nc -e</match>
+    <description>FILELESS MALWARE: Suspicious in-memory reverse shell execution detected!</description>
+    <group>attack,pci_dss_10.6.1,</group>
+  </rule>
+</group>
