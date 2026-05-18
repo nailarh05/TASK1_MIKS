@@ -65,7 +65,6 @@ Infrastruktur dibangun di **Microsoft Azure** menggunakan 3 Virtual Machine (VM)
 | Agent 1 (Target) | Standard_B2als_v2 | Ubuntu 24.04 LTS | 30 GB |
 | Agent 2 (Attacker) | Standard_B2als_v2 | Ubuntu 24.04 LTS | 30 GB |
 
----
 
 ## Workflow Project
 
@@ -254,7 +253,6 @@ sudo tail -f /var/ossec/logs/alerts/alerts.log | grep -E "100010|100011|HTTP Flo
 
 <img width="1600" height="900" alt="image" src="https://github.com/user-attachments/assets/f03e1487-3278-4775-a51c-979ad338194b" />
 
----
 
 ##  Skenario 2: Integrasi Malware Module (VirusTotal)
 
