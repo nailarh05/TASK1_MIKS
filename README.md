@@ -436,7 +436,6 @@ Agent 1 (Target Server)          Agent 2 (Attacker)
 - **FIM Frequency:** Dikonfigurasi untuk scan real-time pada direktori kritis saja (`/home/azureuser/malware_test`)
 - **Log Rotation:** Menggunakan rotasi log default untuk mencegah penumpukan
 
----
 
 ## Custom Rules
 
@@ -450,7 +449,6 @@ Seluruh custom rules disimpan di file [`configs/local_rules.xml`](configs/local_
 | 100011 | 10 | DDoS | HIGH VOLUME HTTP Flood — DDoS Attack! (200+ request/30 detik) |
 | 100020 | 12 | Fileless Malware | Deteksi reverse shell execution di memori |
 
----
 
 ## Struktur Repository
 
