@@ -10,9 +10,9 @@
 
 | Nama | Peran | VM yang Dikelola |
 |------|-------|-----------------|
-| **Arkan** | Blue Team / Analyst | Wazuh Manager (`70.153.25.121`) |
-| **Hana** | Victim / Target Server | Agent 1 (`70.153.148.250`) |
-| **Zahra** | Red Team / Attacker | Agent 2 (`70.153.25.91`) |
+| **M Arkan Zahir Asyafiq** | Blue Team / Analyst | Wazuh Manager (`70.153.25.121`) |
+| **Naila Raniyah Hanan** | Victim / Target Server | Agent 1 (`70.153.148.250`) |
+| **Zahra Hafizhah** | Red Team / Attacker | Agent 2 (`70.153.25.91`) |
 
 ---
 
