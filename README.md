@@ -1,10 +1,4 @@
-#  MIKS Group Task #1 — Wazuh SIEM Deployment & Attack Simulation
-
-**Mata Kuliah:** Manajemen Insiden Keamanan Siber (MIKS)  
-**Institut Teknologi Sepuluh Nopember (ITS)**  
-**Kelompok 2**
-
----
+#  MIKS Group Task #1  —  Wazuh SIEM Deployment & Attack Simulation
 
 ##  Anggota Kelompok & Pembagian Peran
 
@@ -13,8 +7,6 @@
 | **M Arkan Zahir Asyafiq** | Blue Team / Analyst | Wazuh Manager (`70.153.25.121`) |
 | **Naila Raniyah Hanan** | Victim / Target Server | Agent 1 (`70.153.148.250`) |
 | **Zahra Hafizhah** | Red Team / Attacker | Agent 2 (`70.153.25.91`) |
-
----
 
 ## Daftar Isi
 
@@ -28,42 +20,40 @@
 8. [Custom Rules](#-custom-rules)
 9. [Kesimpulan & Lessons Learned](#-kesimpulan--lessons-learned)
 
----
-
 ## Arsitektur Infrastruktur
 
 Infrastruktur dibangun di **Microsoft Azure** menggunakan 3 Virtual Machine (VM) dengan memanfaatkan **Azure for Students Free Tier**.
 
 ```
 ┌─────────────────────────────────────────────────────────────┐
-│                    AZURE CLOUD (Indonesia Central)           │
-│                                                              │
-│  ┌──────────────────┐                                        │
-│  │  WAZUH MANAGER   │  IP: 70.153.25.121                     │
-│  │  (MIKS-Group)    │  OS: Ubuntu 24.04 LTS                  │
-│  │                  │  Size: Standard_B2als_v2                │
-│  │  • Wazuh Manager │                                        │
-│  │  • Wazuh Dashboard│                                       │
-│  │  • Wazuh Indexer  │                                       │
-│  │  • VirusTotal API │                                       │
-│  └────────┬─────────┘                                        │
-│           │ (Menerima log dari Agent)                         │
-│     ┌─────┴─────┐                                            │
-│     │           │                                            │
-│  ┌──▼───────┐ ┌─▼──────────┐                                 │
-│  │ AGENT 1  │ │  AGENT 2   │                                 │
-│  │ (TARGET) │ │ (ATTACKER) │                                 │
-│  │          │ │            │                                  │
-│  │ IP:      │ │ IP:        │                                  │
-│  │ 70.153.  │ │ 70.153.    │                                  │
-│  │ 148.250  │ │ 25.91      │                                  │
-│  │          │ │            │                                  │
-│  │ • Nginx  │ │ • Apache   │                                  │
-│  │ • Wazuh  │ │   Bench    │                                  │
-│  │   Agent  │ │ • Wazuh    │                                  │
-│  │ • Auditd │ │   Agent    │                                  │
-│  │ • FIM    │ │            │                                  │
-│  └──────────┘ └────────────┘                                  │
+│                    AZURE CLOUD (Indonesia Central)          │
+│                                                             │
+│  ┌───────────────── ─┐                                      │
+│  │  WAZUH MANAGER    │         IP: 70.153.25.121            │
+│  │  (MIKS-Group)     │    OS: Ubuntu 24.04 LTS              │
+│  │                   │  Size: Standard_B2als_v2             │
+│  │  • Wazuh Manager  │                                      │
+│  │  • Wazuh Dashboard│                                      │
+│  │  • Wazuh Indexer  │                                      │
+│  │  • VirusTotal API │                                      │
+│  └────────┬──────── ─┘                                      │
+│           │ (Menerima log dari Agt)                         │
+│     ┌─────┴─────┐                                           │
+│     │           │                                           │
+│  ┌──▼───────┐ ┌─▼──────────┐                                │
+│  │ AGENT 1  │ │  AGENT 2   │                                │
+│  │ (TARGET) │ │ (ATTACKER) │                                │
+│  │          │ │            │                                │
+│  │ IP:      │ │ IP:        │                                │
+│  │ 70.153.  │ │ 70.153.    │                                │
+│  │ 148.250  │ │ 25.91      │                                │
+│  │          │ │            │                                │
+│  │ • Nginx  │ │ • Apache   │                                │
+│  │ • Wazuh  │ │   Bench    │                                │
+│  │   Agent  │ │ • Wazuh    │                                │
+│  │ • Auditd │ │   Agent    │                                │
+│  │ • FIM    │ │            │                                │
+│  └──────────┘ └────────────┘                                │
 └─────────────────────────────────────────────────────────────┘
 ```
 
@@ -82,13 +72,13 @@ Infrastruktur dibangun di **Microsoft Azure** menggunakan 3 Virtual Machine (VM)
 Berikut adalah alur kerja keseluruhan project dari awal hingga akhir:
 
 ```
-┌─────────────┐     ┌──────────────┐     ┌───────────────┐
-│  1. DEPLOY  │────▶│ 2. CONFIGURE │────▶│  3. SIMULATE  │
-│  Wazuh di   │     │  Rules &     │     │  Serangan     │
-│  Azure      │     │  Modules     │     │  (DDoS,       │
-│  (3 VM)     │     │              │     │   Malware,    │
-│             │     │              │     │   Fileless)   │
-└─────────────┘     └──────────────┘     └───────┬───────┘
+┌─────────────┐       ┌──────────────┐     ┌───────────────┐
+│  1. DEPLOY  │────▶ │ 2. CONFIGURE │────▶│  3. SIMULATE  │
+│  Wazuh di   │       │  Rules &     │     │  Serangan     │
+│  Azure      │       │  Modules     │     │  (DDoS,       │
+│  (3 VM)     │       │              │     │   Malware,    │
+│             │       │              │     │   Fileless)   │
+└─────────────┘       └──────────────┘     └───────┬───────┘
                                                   │
                     ┌──────────────┐     ┌────────▼────────┐
                     │ 5. REPORT &  │◀────│  4. VALIDATE &  │
@@ -128,7 +118,6 @@ Berikut adalah alur kerja keseluruhan project dari awal hingga akhir:
    - Menyusun laporan di GitHub
    - Mendokumentasikan seluruh konfigurasi dan hasil
 
----
 
 ## Deployment Wazuh di Azure
 
@@ -139,7 +128,8 @@ Berikut adalah alur kerja keseluruhan project dari awal hingga akhir:
 3. Pastikan ketiga VM berada dalam **Resource Group** dan **Virtual Network** yang sama agar bisa berkomunikasi secara internal
 
 **Screenshot: Azure Portal — Ketiga VM dalam status Running**
-*(Tambahkan screenshot Azure Portal di sini)*
+
+<img width="1600" height="900" alt="image" src="https://github.com/user-attachments/assets/da2b28e8-9b88-400c-a3ee-14438ea04e4d" />
 
 ### Langkah 2: Instalasi Wazuh Manager (All-in-One)
 
@@ -184,9 +174,9 @@ sudo systemctl start nginx
 ```
 
 **Screenshot: Wazuh Dashboard — Kedua Agent terhubung (Active)**
-*(Tambahkan screenshot Dashboard menunjukkan agent connected)*
 
----
+<img width="1600" height="900" alt="image" src="https://github.com/user-attachments/assets/055a34a3-8016-4016-af38-2b152ad24496" />
+
 
 ## Skenario 1: Simulasi Serangan DDoS (HTTP Flood)
 
@@ -261,10 +251,8 @@ sudo tail -f /var/ossec/logs/alerts/alerts.log | grep -E "100010|100011|HTTP Flo
 | 100011 | 10 (Critical) | HIGH VOLUME HTTP Flood — DDoS Attack! | 200+ request / 30 detik |
 
 **Screenshot: Alert DDoS di Wazuh Dashboard**
-*(Tambahkan screenshot alert DDoS dari Dashboard)*
 
-**Screenshot: Alert DDoS di Terminal Manager**
-*(Tambahkan screenshot terminal `tail -f` menunjukkan alert)*
+<img width="1600" height="900" alt="image" src="https://github.com/user-attachments/assets/f03e1487-3278-4775-a51c-979ad338194b" />
 
 ---
 
@@ -316,7 +304,9 @@ echo 'X5O!P%@AP[4\PZX54(P^)7CC)7}$EICAR-STANDARD-ANTIVIRUS-TEST-FILE!$H+H*' > /h
 2. **VirusTotal Alert:** VirusTotal mengonfirmasi bahwa hash file `eicar.com` adalah **Malicious** dan terdeteksi oleh 60+ antivirus engine
 
 **Screenshot: Alert VirusTotal di Wazuh Dashboard**
-*(Tambahkan screenshot alert VirusTotal dari Dashboard)*
+
+<img width="1600" height="900" alt="image" src="https://github.com/user-attachments/assets/c8e1f7aa-6128-4fe9-a82e-caf843e3b008" />
+
 
 ---
 
@@ -400,14 +390,12 @@ FILELESS MALWARE: Suspicious in-memory reverse shell execution detected!
 ```
 
 **Screenshot: Alert Fileless Malware di Wazuh Dashboard**
-*(Tambahkan screenshot alert Fileless Malware dari Dashboard)*
 
-**Screenshot: Alert di Terminal Manager**
- (Tambahkan screenshot terminal menunjukkan alert rule 100020)*
+<img width="1600" height="900" alt="image" src="https://github.com/user-attachments/assets/540c32bd-316d-4057-8cc2-59da00851cf2" />
 
 ---
 
-## 📊 Logging Density & Distribution
+## Logging Density & Distribution
 
 ### Sumber Log yang Dikumpulkan
 
@@ -479,8 +467,6 @@ TASK1_MIKS/
 └── screenshots/                       # Bukti screenshot (akan ditambahkan)
 ```
 
----
-
 ## Kesimpulan & Lessons Learned
 
 ### Kesimpulan
@@ -496,5 +482,3 @@ TASK1_MIKS/
 - **Custom Rules:** Rules bawaan Wazuh tidak selalu mencukupi. Custom rules sangat penting untuk mendeteksi pola serangan spesifik seperti DDoS dan fileless malware.
 - **Memory Forensics:** Deteksi malware modern tidak cukup hanya mengandalkan signature-based detection (scan file). Behavioral analysis dan monitoring memori menjadi semakin krusial karena attacker semakin banyak menggunakan teknik fileless.
 - **Cloud Cost Optimization:** VM Azure harus dimatikan (deallocated) saat tidak digunakan untuk menghemat biaya. Perlu diwaspadai bahwa IP Public dapat berubah setelah VM di-restart.
-
-**Kelompok 2 — MIKS ITS 2026**
