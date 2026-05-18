@@ -43,4 +43,10 @@
     <description>FILELESS MALWARE: Suspicious in-memory reverse shell execution detected!</description>
     <group>attack,pci_dss_10.6.1,</group>
   </rule>
+  <rule id="100021" level="12">
+    <if_sid>80700</if_sid>
+    <match>696D706F727420736F636B6574</match>
+    <description>FILELESS MALWARE: Suspicious in-memory reverse shell execution detected!</description>
+    <group>attack,pci_dss_10.6.1,</group>
+  </rule>
 </group>
