@@ -2,7 +2,7 @@
 
 > **Mata Kuliah:** Manajemen Insiden Keamanan Siber (MIKS)  
 > **Institut Teknologi Sepuluh Nopember (ITS)**  
-> **Kelompok C13**
+> **Kelompok 2**
 
 ---
 
