@@ -16,7 +16,7 @@
 
 ---
 
-## 📋 Daftar Isi
+## Daftar Isi
 
 1. [Arsitektur Infrastruktur](#-arsitektur-infrastruktur)
 2. [Workflow Project](#-workflow-project)
@@ -30,7 +30,7 @@
 
 ---
 
-## 🏗️ Arsitektur Infrastruktur
+## Arsitektur Infrastruktur
 
 Infrastruktur dibangun di **Microsoft Azure** menggunakan 3 Virtual Machine (VM) dengan memanfaatkan **Azure for Students Free Tier**.
 
@@ -77,7 +77,7 @@ Infrastruktur dibangun di **Microsoft Azure** menggunakan 3 Virtual Machine (VM)
 
 ---
 
-## 🔄 Workflow Project
+## Workflow Project
 
 Berikut adalah alur kerja keseluruhan project dari awal hingga akhir:
 
@@ -130,7 +130,7 @@ Berikut adalah alur kerja keseluruhan project dari awal hingga akhir:
 
 ---
 
-## 🚀 Deployment Wazuh di Azure
+## Deployment Wazuh di Azure
 
 ### Langkah 1: Membuat Virtual Machine di Azure
 
@@ -188,7 +188,7 @@ sudo systemctl start nginx
 
 ---
 
-## ⚡ Skenario 1: Simulasi Serangan DDoS (HTTP Flood)
+## Skenario 1: Simulasi Serangan DDoS (HTTP Flood)
 
 ### Deskripsi
 Simulasi serangan **Distributed Denial of Service (DDoS)** tipe HTTP Flood. Agent 2 (Attacker) membanjiri web server Nginx di Agent 1 (Target) dengan ratusan HTTP request dalam waktu singkat.
@@ -320,7 +320,7 @@ echo 'X5O!P%@AP[4\PZX54(P^)7CC)7}$EICAR-STANDARD-ANTIVIRUS-TEST-FILE!$H+H*' > /h
 
 ---
 
-## 🧠 Skenario 3: Fileless Malware & Memory Forensics
+## Skenario 3: Fileless Malware & Memory Forensics
 
 ### Deskripsi
 Simulasi **Fileless Malware** menggunakan teknik **Living off the Land (LotL)**. Berbeda dengan malware tradisional yang berbentuk file (`.exe`, `.sh`), fileless malware beroperasi **langsung di dalam RAM (memori)** tanpa meninggalkan jejak file di hard disk.
@@ -450,7 +450,7 @@ Agent 1 (Target Server)          Agent 2 (Attacker)
 
 ---
 
-## 📜 Custom Rules
+## Custom Rules
 
 Seluruh custom rules disimpan di file [`configs/local_rules.xml`](configs/local_rules.xml).
 
@@ -464,7 +464,7 @@ Seluruh custom rules disimpan di file [`configs/local_rules.xml`](configs/local_
 
 ---
 
-## 📁 Struktur Repository
+## Struktur Repository
 
 ```
 TASK1_MIKS/
@@ -481,7 +481,7 @@ TASK1_MIKS/
 
 ---
 
-## 💡 Kesimpulan & Lessons Learned
+## Kesimpulan & Lessons Learned
 
 ### Kesimpulan
 
