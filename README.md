@@ -1,4 +1,4 @@
-# 🛡️ MIKS Group Task #1 — Wazuh SIEM Deployment & Attack Simulation
+#  MIKS Group Task #1 — Wazuh SIEM Deployment & Attack Simulation
 
 > **Mata Kuliah:** Manajemen Insiden Keamanan Siber (MIKS)  
 > **Institut Teknologi Sepuluh Nopember (ITS)**  
@@ -6,7 +6,7 @@
 
 ---
 
-## 👥 Anggota Kelompok & Pembagian Peran
+##  Anggota Kelompok & Pembagian Peran
 
 | Nama | Peran | VM yang Dikelola |
 |------|-------|-----------------|
@@ -268,7 +268,7 @@ sudo tail -f /var/ossec/logs/alerts/alerts.log | grep -E "100010|100011|HTTP Flo
 
 ---
 
-## 🦠 Skenario 2: Integrasi Malware Module (VirusTotal)
+##  Skenario 2: Integrasi Malware Module (VirusTotal)
 
 ### Deskripsi
 Wazuh diintegrasikan dengan **VirusTotal API** untuk mendeteksi file malware yang masuk ke server. Ketika File Integrity Monitoring (FIM) mendeteksi file baru di direktori yang dipantau, Wazuh secara otomatis mengirimkan hash file tersebut ke VirusTotal untuk diverifikasi apakah file tersebut termasuk malware.
@@ -499,4 +499,4 @@ TASK1_MIKS/
 
 ---
 
-> **Kelompok C13 — MIKS ITS 2026**
+> **Kelompok 2 — MIKS ITS 2026**
