@@ -452,14 +452,15 @@ IP penyerang berhasil diisolasi dalam hitungan detik secara otomatis, sementara 
 
 ### Bukti Screenshot Pengujian
 
-**Screenshot: Notifikasi Alert DDoS Masuk ke Bot Telegram**
-*(Tambahkan screenshot chat bot Telegram Anda di sini)*
+<img width="1203" height="375" alt="image" src="https://github.com/user-attachments/assets/fd6c28e8-96c3-4eb5-994b-82b7509051cc" />
 
-**Screenshot: Workflow Shuffle SOAR Berhasil Dieksekusi (Semua Node Hijau)**
-*(Tambahkan screenshot layar monitoring/canvas Shuffle SOAR Anda di sini)*
 
-**Screenshot: IP Penyerang Terblokir di iptables Agent 1**
-*(Tambahkan screenshot terminal Agent 1 yang menampilkan hasil sudo iptables -L INPUT -n -v | grep DROP)*
+
+<img width="1920" height="1080" alt="image" src="https://github.com/user-attachments/assets/bbc1875e-c621-45e1-972e-0dc42bd15687" />
+
+
+<img width="721" height="233" alt="image" src="https://github.com/user-attachments/assets/bb409847-5456-4964-9cae-4a135a96c841" />
+
 
 ---
 
