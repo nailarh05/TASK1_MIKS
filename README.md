@@ -1,4 +1,4 @@
-#  MIKS Group Task #1  —  Wazuh SIEM Deployment & Attack Simulation
+#  MIKS Group Task #1 Wazuh SIEM Deployment & Attack Simulation
 
 ##  Anggota Kelompok & Pembagian Peran
 
