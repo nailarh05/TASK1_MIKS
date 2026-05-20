@@ -24,9 +24,10 @@
 4. [Skenario 1: Simulasi Serangan DDoS](#-skenario-1-simulasi-serangan-ddos-http-flood)
 5. [Skenario 2: Integrasi Malware Module (VirusTotal)](#-skenario-2-integrasi-malware-module-virustotal)
 6. [Skenario 3: Fileless Malware & Memory Forensics](#-skenario-3-fileless-malware--memory-forensics)
-7. [Logging Density & Distribution](#-logging-density--distribution)
-8. [Custom Rules](#-custom-rules)
-9. [Kesimpulan & Lessons Learned](#-kesimpulan--lessons-learned)
+7. [Skenario 4: Mitigasi DDoS Otomatis dengan Shuffle SOAR](#-skenario-4-mitigasi-ddos-otomatis-dengan-shuffle-soar)
+8. [Logging Density & Distribution](#-logging-density--distribution)
+9. [Custom Rules](#-custom-rules)
+10. [Kesimpulan & Lessons Learned](#-kesimpulan--lessons-learned)
 
 ---
 
@@ -407,6 +408,64 @@ FILELESS MALWARE: Suspicious in-memory reverse shell execution detected!
 
 ---
 
+## Skenario 4: Mitigasi DDoS Otomatis dengan Shuffle SOAR
+
+### Deskripsi
+Setelah mendeteksi serangan pada **Skenario 1**, admin biasanya harus memblokir penyerang secara manual. **Skenario 4** mengintegrasikan **Shuffle SOAR (Security Orchestration, Automation, and Response)** untuk mendeteksi secara instan melalui Webhook, mengirimkan notifikasi ke **Telegram**, dan secara otomatis mengeksekusi **Active Response** (iptables drop) di Agent 1 untuk memblokir IP Agent 2 tanpa intervensi manusia (*Zero-Touch Mitigation*).
+
+### Alur Integrasi SOAR
+```
+┌─────────────────┐      JSON Alert      ┌──────────────────┐
+│  Wazuh Manager  │─────────────────────▶│   Shuffle SOAR   │
+│                 │                      │                  │
+│  • Rule 100010  │                      │  • Webhook       │
+└─────────────────┘                      └────────┬─────────┘
+         ▲                                        │
+         │ Active Response (PUT API)              │ Notifikasi Telegram
+         ├────────────────────────────────────────┼──────────────┐
+         │                                        ▼              ▼
+┌────────┴────────┐                      ┌─────────────────┐  ┌─────────────┐
+│  Agent 1 (Web)  │                      │   Wazuh Manager │  │  Telegram   │
+│                 │                      │   REST API      │  │  Bot        │
+│  • iptables DROP│                      │   (Port 55000)  │  └─────────────┘
+└─────────────────┘                      └─────────────────┘
+```
+
+### Konfigurasi di Wazuh Manager (`ossec.conf`)
+Menambahkan integrasi webhook ke Shuffle SOAR dan mengaktifkan Active Response:
+
+```xml
+<!-- Integrasi Webhook ke Shuffle SOAR -->
+<integration>
+  <name>shuffle</name>
+  <hook_url>https://20.17.179.157:3443/api/v1/hooks/webhook_933588a2-a359-4a45-84e4-d51f64bddcff</hook_url>
+  <rule_id>100010,100011</rule_id>
+  <alert_format>json</alert_format>
+</integration>
+```
+
+### Konfigurasi Workflow di Shuffle SOAR
+Workflow di Shuffle terdiri dari 4 node utama:
+1. **Webhook 1**: Menerima payload alert JSON dari Wazuh Manager saat Rule `100010` terpicu.
+2. **Telegram Bot 1**: Mengirimkan notifikasi insiden langsung ke kanal chat Telegram admin.
+3. **Http 1 (Get Token)**: Melakukan request `GET` secara aman ke API Wazuh Manager (`https://192.168.102.1:55000/security/user/authenticate`) untuk mendapatkan token JWT akses dinamis yang valid.
+4. **Http 2 (Trigger Active Response)**: Menggunakan token dari node sebelumnya untuk mengirimkan request `PUT` ke API Wazuh Manager guna mengeksekusi perintah Active Response `firewall-drop300` bagi IP penyerang pada Agent 1.
+
+### Langkah Eksekusi (Simulasi Mitigasi Otomatis)
+1. **Attacker** (Agent 2) memulai banjir HTTP Flood menggunakan `./flood.sh`.
+2. **Wazuh Manager** menangkap alert DDoS dan menembakkannya ke **Shuffle Webhook**.
+3. **Telegram** berbunyi memberi sinyal bahaya, sementara **Shuffle** secara otomatis memanggil API Wazuh untuk memblokir IP Agent 2.
+4. Serangan di terminal Agent 2 mendadak macet total (Connection Timeout).
+5. Pada Agent 1, verifikasi aturan blokir yang terpasang otomatis:
+   ```bash
+   sudo iptables -L INPUT -n -v | grep DROP
+   ```
+
+### Hasil yang Diharapkan
+IP penyerang berhasil diisolasi dalam hitungan detik secara otomatis, sementara pengguna sah lainnya tetap dapat mengakses web server Agent 1 dengan lancar.
+
+---
+
 ## 📊 Logging Density & Distribution
 
 ### Sumber Log yang Dikumpulkan
@@ -472,10 +531,14 @@ TASK1_MIKS/
 ├── configs/
 │   ├── local_rules.xml                # Custom Wazuh rules
 │   ├── audit_rules.conf               # Auditd rules untuk Agent 1
-│   └── virustotal_integration.xml     # Konfigurasi integrasi VirusTotal
+│   ├── virustotal_integration.xml     # Konfigurasi integrasi VirusTotal
+│   ├── ossec_soar.conf                # Konfigurasi Wazuh Manager + SOAR
+│   └── shuffle_workflow.json          # File export workflow Shuffle SOAR
 ├── scripts/
 │   ├── ddos_http_flood.ps1            # Script simulasi DDoS (PowerShell)
-│   └── fileless_malware_test.sh       # Script simulasi Fileless Malware
+│   ├── fileless_malware_test.sh       # Script simulasi Fileless Malware
+│   ├── flood.sh                       # Script simulasi DDoS Bash
+│   └── trigger_ar.py                  # Script Python penembak Wazuh API
 └── screenshots/                       # Bukti screenshot (akan ditambahkan)
 ```
 
@@ -489,9 +552,12 @@ TASK1_MIKS/
 2. **Serangan DDoS** berhasil dideteksi menggunakan custom rules yang memantau frekuensi HTTP request dari sumber IP yang sama.
 3. **Malware Module** berhasil diintegrasikan menggunakan VirusTotal API dan File Integrity Monitoring (FIM) untuk mendeteksi file berbahaya.
 4. **Fileless Malware** berhasil dideteksi menggunakan behavioral analysis melalui integrasi Auditd yang memantau eksekusi perintah mencurigakan di level kernel/memori.
+5. **Mitigasi SOAR Otomatis** berhasil berjalan sempurna menggunakan Shuffle SOAR yang mengotomatisasi rantai tindakan: Deteksi ➡️ Notifikasi Telegram ➡️ Autentikasi Token API Dinamis ➡️ Pemblokiran Firewall Presisi (*Zero-Touch Security Orchestration*).
 
 ### Lessons Learned
 
+- **SOAR Orchestration:** Integrasi SIEM dengan platform SOAR seperti Shuffle memungkinkan respons insiden berjalan dalam hitungan detik, menghilangkan latensi waktu dari tindakan manual manusia.
+- **Dynamic API Security:** Wazuh REST API menggunakan token JWT berdurasi pendek (15 menit). Penggunaan SOAR yang menarik token baru secara dinamis adalah satu-satunya solusi yang stabil untuk operasi jangka panjang.
 - **Disk Management:** Vulnerability Detector bawaan Wazuh dapat menghabiskan disk space dengan sangat cepat (23GB+). Penting untuk memantau penggunaan disk dan menonaktifkan modul yang tidak diperlukan.
 - **Custom Rules:** Rules bawaan Wazuh tidak selalu mencukupi. Custom rules sangat penting untuk mendeteksi pola serangan spesifik seperti DDoS dan fileless malware.
 - **Memory Forensics:** Deteksi malware modern tidak cukup hanya mengandalkan signature-based detection (scan file). Behavioral analysis dan monitoring memori menjadi semakin krusial karena attacker semakin banyak menggunakan teknik fileless.
