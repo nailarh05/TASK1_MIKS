@@ -450,6 +450,17 @@ Workflow di Shuffle terdiri dari 4 node utama:
 ### Hasil yang Diharapkan
 IP penyerang berhasil diisolasi dalam hitungan detik secara otomatis, sementara pengguna sah lainnya tetap dapat mengakses web server Agent 1 dengan lancar.
 
+### Bukti Screenshot Pengujian
+
+**Screenshot: Notifikasi Alert DDoS Masuk ke Bot Telegram**
+*(Tambahkan screenshot chat bot Telegram Anda di sini)*
+
+**Screenshot: Workflow Shuffle SOAR Berhasil Dieksekusi (Semua Node Hijau)**
+*(Tambahkan screenshot layar monitoring/canvas Shuffle SOAR Anda di sini)*
+
+**Screenshot: IP Penyerang Terblokir di iptables Agent 1**
+*(Tambahkan screenshot terminal Agent 1 yang menampilkan hasil sudo iptables -L INPUT -n -v | grep DROP)*
+
 ---
 
 ## Logging Density & Distribution
